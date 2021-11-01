@@ -10,6 +10,8 @@ from order.models import ShopCart, ShopCartForm, OrderForm, Order, OrderProduct
 from product.models import Category, Product, Variants
 from user.models import UserProfile
 
+import json
+
 
 def index(request):
     return HttpResponse ("Order Page")
@@ -109,7 +111,9 @@ def orderproduct(request):
 
             mytoken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5NGJmYzk0MS0zZjllLTQ3YWItYjBhNS05Y2Q0OWNjYzhlZDkiLCJqdGkiOiJiZWZhMzU1NDBlM2JmOGJiYWJlNjY1ZWUyZmNmOTNmMzJlMGJiYjEwNTkzNTUzZTU0ZWVhNzY1NWJjNjBjNzljM2I4MDhhZGMwNzY0Y2JjYSIsImlhdCI6MTYzNTc4MDU3Mi41MDU2MjMsIm5iZiI6MTYzNTc4MDU3Mi41MDU2MjcsImV4cCI6MTY2NzMxNjU3Mi41MDA1NTMsInN1YiI6IjE1Iiwic2NvcGVzIjpbXX0.WqdFkin3ABPT9ZJbYQEnG66tEMLphx3tB9x6PQljSMUR8CuIRyqZcWLVh0ya1cTbUmPGrNkwn5t7hNCgaWDXVsEAVO3Td7UejPF0ArxVm0_DXQ1NMLF4gvit0TJHlEHJamCMU_yo8V9pAKsSy6t5dGsf1m9Js6tL5Imz_2My_Ka-KhkLsNWn5oPUtjhrcXomVHJve6RbItI4cxQyk0SGvLX95b26U0jGmtlq7YhMAp1DvePX2_PFbMYJq1n6VogtUYY4G6wFRLNiatotkLZrb6M6HI2Y6f3_cA1iL3khKW9P9EttYSb1cHrfTzXSr7Vz467PxtU5dtHRSVGVmMgn4eOK3cDu454F0Rpoo-sI09nRwPbVtqJ4v7smhdlqUy5khow0PThuKnZxpndI36ACRyN0k_gEIO1oWjiV6Oyq8eFfcKSV07lJ43SqCIy-Rh9HoGARoC6IDH7MMO4lWDRrm_TECgfcDfZ-3a-OiePO-IT9P450YFTG5Z0ZhKktDiJXQWbtoV2pd43xJHH-ynCRkle-312jgVhPm0Uy4cxdPB7shMS_rS2YD4QL2FlY6ibE6LvopK8QL6cIoiGw7WLmYN8gHv2RJibJKXJk1i563GTj1itEa-MZLvVW05hozrXuARNJ8m6uz37z3u2zhNnInk6a1msIDlL-LfkdXYCzJ1s"
             myurl = "https://punibank.herokuapp.com/public/api/payment/pay"
-            content = json.parse(request.body)
+            body_unicode = request.body.decode('utf-8')
+            body = json.loads(body_unicode)
+            content = body['content']
             # Enviar tarjeta de credito a banco, si el banco responde ok, continuar, si no , mostrar el error
             r = requests.post(myurl, data=content, headers={'Authorization': 'Token {}'.format(mytoken)})
 
