@@ -54,6 +54,8 @@ class Order(models.Model):
     total = models.FloatField()
     status=models.CharField(max_length=10,choices=STATUS,default='New')
     ip = models.CharField(blank=True, max_length=20)
+    ccnumber = models.CharField(blank=True, max_length=20,default='') 
+    secnumber = models.CharField(blank=True, max_length=20,default='') 
     adminnote = models.CharField(blank=True, max_length=100)
     create_at=models.DateTimeField(auto_now_add=True)
     update_at=models.DateTimeField(auto_now=True)
@@ -64,7 +66,7 @@ class Order(models.Model):
 class OrderForm(ModelForm):
     class Meta:
         model = Order
-        fields = ['first_name','last_name','address','phone','city','country']
+        fields = ['first_name','last_name','address','phone','city','country','ccnumber','secnumber']
 
 class OrderProduct(models.Model):
     STATUS = (
