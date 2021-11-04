@@ -115,9 +115,7 @@ def orderproduct(request):
 
     if request.method == 'POST':
         form = OrderForm(request.POST)
-        #return HttpResponse(request.POST.items())
         if form.is_valid():
-
             data = Order()
             data.first_name = form.cleaned_data['first_name'] #get product quantity from form
             data.last_name = form.cleaned_data['last_name']
@@ -133,6 +131,7 @@ def orderproduct(request):
             data.code =  ordercode
             data.save() #
 
+            #API REQUEST
             response_data = {}
             response_data['numero'] = form.cleaned_data['ccnumber']
             response_data['ccv'] = form.cleaned_data['secnumber']
@@ -142,21 +141,16 @@ def orderproduct(request):
             url = "https://punibank.herokuapp.com/public/api/payment/pay"
 
             headers = {
-              'Authorization': 'Token {}'.format(mytoken),
+              'Authorization': 'Bearer {}'.format(mytoken)
             }
 
             print(json.dumps(response_data, cls=DecimalEncoder))
-            r = requests.request("POST", url, headers=headers, data=json.dumps(response_data, cls=DecimalEncoder))
-
             # Enviar tarjeta de credito a banco, si el banco responde ok, continuar, si no , mostrar el error
-            #r = requests.post(myurl, data=content, headers={'Authorization': 'Token {}'.format(mytoken)})
+            r = requests.request("POST", url, headers=headers, data=json.dumps(response_data, cls=DecimalEncoder))
 
             # Tarjet paso
             if r.status_code == 200:
                 print(f'Post succeed: {r}')
-                
-
-
                 for rs in shopcart:
                     detail = OrderProduct()
                     detail.order_id     = data.id # Order Id
@@ -187,7 +181,8 @@ def orderproduct(request):
                 return render(request, 'Order_Completed.html',{'ordercode':ordercode,'category': category})
             #Tarjeta no paso
             else:
-                print(f'Post failed: {r}')        
+                print(f'Post failed: {r}')  
+                #return render(request, 'Order_Failed.html',{'category': category})
         else:
             messages.warning(request, form.errors)
             return HttpResponseRedirect("/order/orderproduct")
