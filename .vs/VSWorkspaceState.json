@@ -1,9 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\home",
-    "\\order",
-    "\\user"
+    "\\order"
   ],
   "SelectedNode": "\\order\\views.py",
   "PreviewInSolutionExplorer": false

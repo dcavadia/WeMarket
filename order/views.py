@@ -137,13 +137,14 @@ def orderproduct(request):
             response_data['ccv'] = form.cleaned_data['secnumber']
             response_data['monto'] = int(total)
 
-            mytoken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5NGJmYzk0MS0zZjllLTQ3YWItYjBhNS05Y2Q0OWNjYzhlZDkiLCJqdGkiOiJiZWZhMzU1NDBlM2JmOGJiYWJlNjY1ZWUyZmNmOTNmMzJlMGJiYjEwNTkzNTUzZTU0ZWVhNzY1NWJjNjBjNzljM2I4MDhhZGMwNzY0Y2JjYSIsImlhdCI6MTYzNTc4MDU3Mi41MDU2MjMsIm5iZiI6MTYzNTc4MDU3Mi41MDU2MjcsImV4cCI6MTY2NzMxNjU3Mi41MDA1NTMsInN1YiI6IjE1Iiwic2NvcGVzIjpbXX0.WqdFkin3ABPT9ZJbYQEnG66tEMLphx3tB9x6PQljSMUR8CuIRyqZcWLVh0ya1cTbUmPGrNkwn5t7hNCgaWDXVsEAVO3Td7UejPF0ArxVm0_DXQ1NMLF4gvit0TJHlEHJamCMU_yo8V9pAKsSy6t5dGsf1m9Js6tL5Imz_2My_Ka-KhkLsNWn5oPUtjhrcXomVHJve6RbItI4cxQyk0SGvLX95b26U0jGmtlq7YhMAp1DvePX2_PFbMYJq1n6VogtUYY4G6wFRLNiatotkLZrb6M6HI2Y6f3_cA1iL3khKW9P9EttYSb1cHrfTzXSr7Vz467PxtU5dtHRSVGVmMgn4eOK3cDu454F0Rpoo-sI09nRwPbVtqJ4v7smhdlqUy5khow0PThuKnZxpndI36ACRyN0k_gEIO1oWjiV6Oyq8eFfcKSV07lJ43SqCIy-Rh9HoGARoC6IDH7MMO4lWDRrm_TECgfcDfZ-3a-OiePO-IT9P450YFTG5Z0ZhKktDiJXQWbtoV2pd43xJHH-ynCRkle-312jgVhPm0Uy4cxdPB7shMS_rS2YD4QL2FlY6ibE6LvopK8QL6cIoiGw7WLmYN8gHv2RJibJKXJk1i563GTj1itEa-MZLvVW05hozrXuARNJ8m6uz37z3u2zhNnInk6a1msIDlL-LfkdXYCzJ1s"
+            mytoken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5NGJmYzk0MS0zZjllLTQ3YWItYjBhNS05Y2Q0OWNjYzhlZDkiLCJqdGkiOiIxNTg4MTIyNGVkMjM2MmNjNzNmNDM0NTYxNWE2NDBlYjdkMmRiY2ZhZjBhYjUxYWM0MmQyM2E4NTUwYWNmYWE3NjlkYzg1NDgyNTQ1ODBhMCIsImlhdCI6MTYzNjY3NTM4Ni45ODExNzYsIm5iZiI6MTYzNjY3NTM4Ni45ODExOCwiZXhwIjoxNjY4MjExMzg2Ljk3MDg2OCwic3ViIjoiMTgiLCJzY29wZXMiOltdfQ.pV2_UlePrk3Gja37mbv17b71Ad15OaOZXT_ZcT-ZtV6FFhxyeL2a09d2rWdNweWPZkcd1joT5zltFb_rU57IoHXWTVVUT-pJn4AodHnTbqhBulZK9nLi3mqyPJrUSiH-QzjCPpKPrv_vL9FXdrVv0HHt0tS-I1CUJ52cPLReSKZKE92kASExO1SIGBlZsrWhLr5EhSbmpJYTp8ojYphWiTEu7QDDybvSN23dX3sZjGiWMDVSVnTqVH-RMZLG3hGskzGArGFi0YicIJvKV00xLaqq6RbpnqFTTT_apEUxGRlMu0XIImEBtBMf1pV7NuYQP-wpnmLFo3GESHRONad8KOfPep6dXm7s-kk3IGs2hL5sW0WxDd_KixXxWZniZOqDMFgRQoCEoK6UpN7JuJuj0yqP2B1hoC0Ln3ZscmJo3UUtnrYquIpEgrL3sgHhjv1DJvfTxq9riUO_TBIYFxbr8DNUz6o6wM22_AikfaXP5wThAVwnlSu6zlbuXsKZVhmUY-L4rvRLjnxPVtR_oX6NCV-7m_VNQAMwXcd6bhss1i1qenDQt0ocmgAF1acinre5D_m62Z-mAIzS51Kw8LxTzu9FO8AKljqZxiefcbg39f36dVguJaMpQ2WEsJYFKILIvd_Tpjaf5dAmy0TYUrv481lkyKWT9TBg0Ztvz1R5Pnw"
             url = "https://punibank.herokuapp.com/public/api/payment/pay"
 
             headers = {
-              'Authorization': 'Bearer {}'.format(mytoken)
+              'Authorization': 'Bearer {}'.format(mytoken),
+              'Content-Type': 'application/json'
             }
-
+            print(json.dumps(headers))
             print(json.dumps(response_data, cls=DecimalEncoder))
             # Enviar tarjeta de credito a banco, si el banco responde ok, continuar, si no , mostrar el error
             r = requests.request("POST", url, headers=headers, data=json.dumps(response_data, cls=DecimalEncoder))
