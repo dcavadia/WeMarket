@@ -142,12 +142,18 @@ def orderproduct(request):
 
             headers = {
               'Authorization': 'Bearer {}'.format(mytoken),
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
             }
+
             print(json.dumps(headers))
             print(json.dumps(response_data, cls=DecimalEncoder))
             # Enviar tarjeta de credito a banco, si el banco responde ok, continuar, si no , mostrar el error
             r = requests.request("POST", url, headers=headers, data=json.dumps(response_data, cls=DecimalEncoder))
+            
+            print(r.content)
+            print(r.text)
+            print(r.reason)
 
             # Tarjet paso
             if r.status_code == 200:
